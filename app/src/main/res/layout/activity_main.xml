@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="botonBuscarDispositivosBTLEPulsado"
-        android:text="Buscar los Dispositivos BTLE nou 4" />
+        android:text="Buscarrr Dispositivos BTLE nou 4" />
 
     <Button
         android:id="@+id/botonDetenerBusquedaDispositivosBTLE"
