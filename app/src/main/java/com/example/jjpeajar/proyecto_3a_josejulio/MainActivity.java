@@ -77,8 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
     } // ()
 
+
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * scanResulty->mostrarInformacionDispositivoBTLE()
+     *
+     * Scanresult resultado Resultado del escaneo de dispositivos Bluetooth
+     *
+     */
     private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
 
         BluetoothDevice bluetoothDevice = resultado.getDevice();
@@ -127,6 +134,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * Texto->buscarEsteDispositivoBTLE()->
+     *
+     * String dispositivoBuscado Nombre del dispositivo buscado proporcionado por la funcion botonBuscarNuestroDispositivoBTLEPulsado()
+     *
+     */
     private void buscarEsteDispositivoBTLE(final String dispositivoBuscado ) {
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
 
@@ -170,6 +183,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * detenerBusquedaDispositivosBTLE()->
+     *
+     * Detiene el escaneo de dispositivos
+     *
+     */
     private void detenerBusquedaDispositivosBTLE() {
 
         if ( this.callbackDelEscaneo == null ) {
@@ -183,6 +202,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * view->botonBuscarDispositivosBTLEPulsado()->
+     *
+     * View v Variable que representa que el usuario ha hecho click en el botón
+     *
+     */
     public void botonBuscarDispositivosBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado" );
         this.buscarTodosLosDispositivosBTLE();
@@ -190,6 +215,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * view->botonBuscarNuestroDispositivoBTLEPulsado()->
+     *
+     * View v Variable que representa que el usuario ha hecho click en el botón
+     *
+     */
     public void botonBuscarNuestroDispositivoBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado" );
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
@@ -201,6 +232,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * view->botonDetenerBusquedaDispositivosBTLEPulsado()->
+     *
+     * View v Variable que representa que el usuario ha hecho click en el botón
+     *
+     */
     public void botonDetenerBusquedaDispositivosBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton detener busqueda dispositivos BTLE Pulsado" );
         this.detenerBusquedaDispositivosBTLE();
@@ -208,6 +245,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * inicializarBlueTooth()
+     *
+     * inicializa el escaner
+     *
+     */
     private void inicializarBlueTooth() {
         Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos adaptador BT ");
 
@@ -264,6 +307,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
 
     } // onCreate()
+
+
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
