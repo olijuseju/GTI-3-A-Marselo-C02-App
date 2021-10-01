@@ -92,8 +92,6 @@ public class TramaIBeacon {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
 
     /**
      * Constructor de la clase. Segmentamos el array bytes
@@ -101,7 +99,6 @@ public class TramaIBeacon {
      * @param bytes bytes a segmentar
      */
 
->>>>>>> Stashed changes
     public TramaIBeacon(byte[] bytes ) {
         this.losBytes = bytes;
 

@@ -83,14 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
 
     /**
      * Mostramos la informacion del resultado del escaneo
      * @param resultado Resultado del escaneo Bluetooth
      */
->>>>>>> Stashed changes
     private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
 
         BluetoothDevice bluetoothDevice = resultado.getDevice();
@@ -139,14 +136,11 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
 
     /**
      * Buscamos un dispositivo en concreto via Bluetooth
      * @param dispositivoBuscado id del dispositivo a buscar
      */
->>>>>>> Stashed changes
     private void buscarEsteDispositivoBTLE(final String dispositivoBuscado ) {
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
 
@@ -190,13 +184,11 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
+
 
     /**
      * Detenemos la búsqueda de dispositivos
      */
->>>>>>> Stashed changes
     private void detenerBusquedaDispositivosBTLE() {
 
         if ( this.callbackDelEscaneo == null ) {
@@ -210,14 +202,12 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
+
 
     /**
      *
      * @param v indica si el usuario pulsó el botón
      */
->>>>>>> Stashed changes
     public void botonBuscarDispositivosBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado" );
         this.buscarTodosLosDispositivosBTLE();
@@ -225,14 +215,11 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
 
     /**
      *
      * @param v indica si el usuario pulsó el botón
      */
->>>>>>> Stashed changes
     public void botonBuscarNuestroDispositivoBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado" );
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
@@ -244,14 +231,11 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
 
     /**
      *
      * @param v indica si el usuario pulsó el botón
      */
->>>>>>> Stashed changes
     public void botonDetenerBusquedaDispositivosBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton detener busqueda dispositivos BTLE Pulsado" );
         this.detenerBusquedaDispositivosBTLE();
@@ -259,14 +243,11 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
     /**
      *
      * Inicializamos el escaner Bluetooth
      *
      */
->>>>>>> Stashed changes
     private void inicializarBlueTooth() {
         Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos adaptador BT ");
 
