@@ -20,6 +20,10 @@ public class TramaIBeacon {
     private byte iBeaconType = 0 ; // 1 byte
     private byte iBeaconLength = 0 ; // 1 byte
 
+    /**
+     * GETTERS Y SETTERS
+     */
+
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
     public byte[] getPrefijo() {
@@ -88,6 +92,16 @@ public class TramaIBeacon {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+<<<<<<< Updated upstream
+=======
+
+    /**
+     * Constructor de la clase. Segmentamos el array bytes
+     *
+     * @param bytes bytes a segmentar
+     */
+
+>>>>>>> Stashed changes
     public TramaIBeacon(byte[] bytes ) {
         this.losBytes = bytes;
 
