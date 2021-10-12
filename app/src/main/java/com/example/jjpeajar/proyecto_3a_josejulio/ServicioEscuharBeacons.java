@@ -17,6 +17,7 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     private long tiempoDeEspera = 10000;
     private String dispositivoBuscado = null;
+    private LogicaNegocio logicaNegocio;
 
 
     private boolean seguir = true;
@@ -100,7 +101,12 @@ public class ServicioEscuharBeacons  extends IntentService {
 
         long contador = 1;
 
+        MedicionC02 medicionC02 = new MedicionC02();
+        logicaNegocio.publicarMecicion(medicionC02);
+
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onHandleIntent: empieza : thread=" + Thread.currentThread().getId() );
+
+
 
         try {
 
