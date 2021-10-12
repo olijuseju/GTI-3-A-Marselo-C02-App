@@ -16,6 +16,8 @@ public class ServicioEscuharBeacons  extends IntentService {
     private static final String ETIQUETA_LOG = ">>>>";
 
     private long tiempoDeEspera = 10000;
+    private String dispositivoBuscado = null;
+
 
     private boolean seguir = true;
 
