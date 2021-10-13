@@ -1,6 +1,8 @@
 package com.example.jjpeajar.proyecto_3a_josejulio;
 
-public class MedicionC02 {
+import java.io.Serializable;
+
+public class MedicionC02 implements  Serializable {
     public String SensorId;
     public double data;
     public double latitud;

@@ -1,11 +1,12 @@
 package com.example.jjpeajar.proyecto_3a_josejulio;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 // -----------------------------------------------------------------------------------
 // @author: Jordi Bataller i Mascarell
 // -----------------------------------------------------------------------------------
-public class TramaIBeacon {
+public class TramaIBeacon implements Serializable {
     private byte[] prefijo = null; // 9 bytes
     private byte[] uuid = null; // 16 bytes
     private byte[] major = null; // 2 bytes
