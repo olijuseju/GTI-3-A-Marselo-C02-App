@@ -3,9 +3,12 @@ package com.example.jjpeajar.proyecto_3a_josejulio;
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import static android.app.Service.START_STICKY;
+
+import java.io.Serializable;
 
 // -------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------
@@ -17,6 +20,7 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     private long tiempoDeEspera = 10000;
     private String dispositivoBuscado = null;
+    private LogicaNegocio logicaNegocio = new LogicaNegocio();
 
 
     private boolean seguir = true;
@@ -102,9 +106,20 @@ public class ServicioEscuharBeacons  extends IntentService {
 
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onHandleIntent: empieza : thread=" + Thread.currentThread().getId() );
 
+
+
         try {
 
             while ( this.seguir ) {
+                Bundle bundle = intent.getBundleExtra("tib");
+                if(bundle!=null){
+                    TramaIBeacon tib = (TramaIBeacon) bundle.getSerializable("tib");
+
+                    Log.d(ETIQUETA_LOG,"alverga"+ String.valueOf(tib.getMajor()));
+
+                    MedicionC02 medicionC02 = new MedicionC02();
+                    logicaNegocio.publicarMecicion(medicionC02);
+                }
                 Thread.sleep(tiempoDeEspera);
                 Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onHandleIntent: tras la espera:  " + contador );
                 contador++;

@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,6 +118,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " bytes (" + bytes.length + ") = " + Utilidades.bytesToHexString(bytes));
 
         TramaIBeacon tib = new TramaIBeacon(bytes);
+
+        /************************************
+        //Pasamos la trama beacon al servicio
+         ************************************/
+
+        Bundle bundle= new Bundle();
+        bundle.putSerializable("tib", tib);
+        elIntentDelServicio.putExtra("tib",bundle);
+        startService( this.elIntentDelServicio );
+
+        /************************************
+         //Mostramos la trama beacon
+         ************************************/
+
 
         Log.d(ETIQUETA_LOG, " ----------------------------------------------------");
         Log.d(ETIQUETA_LOG, " prefijo  = " + Utilidades.bytesToHexString(tib.getPrefijo()));
@@ -238,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
         this.elIntentDelServicio = new Intent(this, ServicioEscuharBeacons.class);
 
         this.elIntentDelServicio.putExtra("tiempoDeEspera", (long) 5000);
-        startService( this.elIntentDelServicio );
 
         Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado" );
         this.buscarTodosLosDispositivosBTLE();
@@ -254,13 +268,6 @@ public class MainActivity extends AppCompatActivity {
     public void botonBuscarNuestroDispositivoBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado" );
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
-
-        //this.buscarEsteDispositivoBTLE( "EPSG-GTI-PROY-3A" );
-        this.buscarEsteDispositivoBTLE( "OPPO A91" );
-
-
-        Log.d(ETIQUETA_LOG, " boton arrancar servicio Pulsado" );
-
         if ( this.elIntentDelServicio != null ) {
             // ya estaba arrancado
             return;
@@ -271,7 +278,12 @@ public class MainActivity extends AppCompatActivity {
         this.elIntentDelServicio = new Intent(this, ServicioEscuharBeacons.class);
 
         this.elIntentDelServicio.putExtra("tiempoDeEspera", (long) 5000);
-        startService( this.elIntentDelServicio );
+        //this.buscarEsteDispositivoBTLE( "EPSG-GTI-PROY-3A" );
+        this.buscarEsteDispositivoBTLE( "OPPO A91" );
+
+        Log.d(ETIQUETA_LOG, " boton arrancar servicio Pulsado" );
+
+
 
     } // ()
 
