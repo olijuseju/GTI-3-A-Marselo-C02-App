@@ -1,16 +1,24 @@
 package com.example.jjpeajar.proyecto_3a_josejulio;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.IntentService;
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
 import static android.app.Service.START_STICKY;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,6 +34,9 @@ public class ServicioEscuharBeacons  extends IntentService {
     private long tiempoDeEspera = 10000;
     private String dispositivoBuscado = null;
     private LogicaNegocio logicaNegocio = new LogicaNegocio();
+    private static final int CODIGO_PETICION_PERMISOS = 11223344;
+
+    public TramaIBeacon tib;
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -41,39 +52,42 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
-    public ServicioEscuharBeacons(  ) {
+    public ServicioEscuharBeacons( ) {
         super("HelloIntentService");
-
-        this.callbackDelEscaneo = new ScanCallback() {
-            @Override
-            public void onScanResult( int callbackType, ScanResult resultado ) {
-                super.onScanResult(callbackType, resultado);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanResult() ");
-
-                mostrarInformacionDispositivoBTLE( resultado );
-            }
-
-            @Override
-            public void onBatchScanResults(List<ScanResult> results) {
-                super.onBatchScanResults(results);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onBatchScanResults() ");
-
-            }
-
-            @Override
-            public void onScanFailed(int errorCode) {
-                super.onScanFailed(errorCode);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanFailed() ");
-
-            }
-        };
-
-        Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empezamos a escanear ");
-
-        this.elEscanner.startScan( this.callbackDelEscaneo);
 
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.constructor: termina");
     }
+
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
+    /**
+     *
+     * Inicializamos el escaner Bluetooth
+     *
+     */
+    private void inicializarBlueTooth() {
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos adaptador BT ");
+
+        BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): habilitamos adaptador BT ");
+
+        bta.enable();
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): habilitado =  " + bta.isEnabled() );
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): estado =  " + bta.getState() );
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos escaner btle ");
+
+        this.elEscanner = bta.getBluetoothLeScanner();
+
+        if ( this.elEscanner == null ) {
+            Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): Socorro: NO hemos obtenido escaner btle  !!!!");
+
+        }
+
+    } // ()
 
 
     private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
@@ -101,7 +115,7 @@ public class ServicioEscuharBeacons  extends IntentService {
         Log.d(ETIQUETA_LOG, " bytes = " + new String(bytes));
         Log.d(ETIQUETA_LOG, " bytes (" + bytes.length + ") = " + Utilidades.bytesToHexString(bytes));
 
-        TramaIBeacon tib = new TramaIBeacon(bytes);
+        tib = new TramaIBeacon(bytes);
 
 
         Log.d(ETIQUETA_LOG, " ----------------------------------------------------");
@@ -187,6 +201,10 @@ public class ServicioEscuharBeacons  extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        inicializarBlueTooth();
+
+        this.dispositivoBuscado = intent.getStringExtra("dispositivoBuscado");
+
         this.tiempoDeEspera = intent.getLongExtra("tiempoDeEspera", /* default */ 50000);
         this.seguir = true;
 
@@ -196,15 +214,39 @@ public class ServicioEscuharBeacons  extends IntentService {
 
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onHandleIntent: empieza : thread=" + Thread.currentThread().getId() );
 
+        this.callbackDelEscaneo = new ScanCallback() {
+            @Override
+            public void onScanResult( int callbackType, ScanResult resultado ) {
+                super.onScanResult(callbackType, resultado);
+                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
+                mostrarInformacionDispositivoBTLE( resultado );
+            }
+
+            @Override
+            public void onBatchScanResults(List<ScanResult> results) {
+                super.onBatchScanResults(results);
+                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onBatchScanResults() ");
+
+            }
+
+            @Override
+            public void onScanFailed(int errorCode) {
+                super.onScanFailed(errorCode);
+                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanFailed() ");
+
+            }
+        };
+
+        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado ).build();
+
+        Log.d(ETIQUETA_LOG, "  servicioEscucharBeacons(): empezamos a escanear buscando: " + dispositivoBuscado );
+
 
 
         try {
 
             while ( this.seguir ) {
-                Bundle bundle = intent.getBundleExtra("tib");
-                if(bundle!=null){
-                    TramaIBeacon tib = (TramaIBeacon) bundle.getSerializable("tib");
-
+                if(tib!=null){
                     Log.d(ETIQUETA_LOG,"alverga"+ String.valueOf(tib.getMajor()));
 
                     MedicionC02 medicionC02 = new MedicionC02();
