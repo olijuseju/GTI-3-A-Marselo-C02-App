@@ -4,14 +4,19 @@ package com.example.jjpeajar.proyecto_3a_josejulio;
 // ------------------------------------------------------------------
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.util.Log;
@@ -30,11 +35,15 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
+
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     private static final String ETIQUETA_LOG = ">>>>";
 
     private static final int CODIGO_PETICION_PERMISOS = 11223344;
+
+    private static final int SOLICITUD_PERMISO_LOCALIZACION = 1234;
+
 
     private Intent elIntentDelServicio = null;
 
@@ -48,51 +57,10 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
 
     /**
-     * Busca todos los dispositivos o sensores
-     */
-    private void buscarTodosLosDispositivosBTLE() {
-        Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empieza ");
-
-        Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): instalamos scan callback ");
-
-        this.callbackDelEscaneo = new ScanCallback() {
-            @Override
-            public void onScanResult( int callbackType, ScanResult resultado ) {
-                super.onScanResult(callbackType, resultado);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanResult() ");
-
-                mostrarInformacionDispositivoBTLE( resultado );
-            }
-
-            @Override
-            public void onBatchScanResults(List<ScanResult> results) {
-                super.onBatchScanResults(results);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onBatchScanResults() ");
-
-            }
-
-            @Override
-            public void onScanFailed(int errorCode) {
-                super.onScanFailed(errorCode);
-                Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): onScanFailed() ");
-
-            }
-        };
-
-        Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empezamos a escanear ");
-
-        this.elEscanner.startScan( this.callbackDelEscaneo);
-
-    } // ()
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-
-    /**
      * Mostramos la informacion del resultado del escaneo
      * @param resultado Resultado del escaneo Bluetooth
      */
-    private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
+    /*private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
 
         BluetoothDevice bluetoothDevice = resultado.getDevice();
         byte[] bytes = resultado.getScanRecord().getBytes();
@@ -104,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " nombre = " + bluetoothDevice.getName());
         Log.d(ETIQUETA_LOG, " toString = " + bluetoothDevice.toString());
 
-        /*
+        *//*
         ParcelUuid[] puuids = bluetoothDevice.getUuids();
         if ( puuids.length >= 1 ) {
             //Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].getUuid());
            // Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].toString());
-        }*/
+        }*//*
 
         Log.d(ETIQUETA_LOG, " dirección = " + bluetoothDevice.getAddress());
         Log.d(ETIQUETA_LOG, " rssi = " + rssi );
@@ -119,18 +87,18 @@ public class MainActivity extends AppCompatActivity {
 
         TramaIBeacon tib = new TramaIBeacon(bytes);
 
-        /************************************
+        *//************************************
         //Pasamos la trama beacon al servicio
-         ************************************/
+         ************************************//*
 
         Bundle bundle= new Bundle();
         bundle.putSerializable("tib", tib);
         elIntentDelServicio.putExtra("tib",bundle);
         startService( this.elIntentDelServicio );
 
-        /************************************
+        *//************************************
          //Mostramos la trama beacon
-         ************************************/
+         ************************************//*
 
 
         Log.d(ETIQUETA_LOG, " ----------------------------------------------------");
@@ -150,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " txPower  = " + Integer.toHexString(tib.getTxPower()) + " ( " + tib.getTxPower() + " )");
         Log.d(ETIQUETA_LOG, " ****************************************************");
 
-    } // ()
+    } // ()*/
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
@@ -164,42 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): instalamos scan callback ");
 
-        this.elIntentDelServicio.putExtra("dispositivoBuscado",dispositivoBuscado);
+        this.elIntentDelServicio.putExtra("dispositivoBuscado", dispositivoBuscado);
 
-
-        // super.onScanResult(ScanSettings.SCAN_MODE_LOW_LATENCY, result); para ahorro de energía
-
-        this.callbackDelEscaneo = new ScanCallback() {
-            @Override
-            public void onScanResult( int callbackType, ScanResult resultado ) {
-                super.onScanResult(callbackType, resultado);
-                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
-
-                mostrarInformacionDispositivoBTLE( resultado );
-            }
-
-            @Override
-            public void onBatchScanResults(List<ScanResult> results) {
-                super.onBatchScanResults(results);
-                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onBatchScanResults() ");
-
-            }
-
-            @Override
-            public void onScanFailed(int errorCode) {
-                super.onScanFailed(errorCode);
-                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanFailed() ");
-
-            }
-        };
-
-        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado ).build();
-
-        Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado );
-        //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado
-        //      + " -> " + Utilidades.stringToUUID( dispositivoBuscado ) );
-
-        this.elEscanner.startScan( this.callbackDelEscaneo );
+        startService(elIntentDelServicio);
     } // ()
 
     // --------------------------------------------------------------
@@ -235,32 +170,6 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
     // --------------------------------------------------------------
 
-
-    /**
-     *
-     * @param v indica si el usuario pulsó el botón
-     */
-    public void botonBuscarDispositivosBTLEPulsado( View v ) {
-        Log.d(ETIQUETA_LOG, " boton arrancar servicio Pulsado" );
-
-        if ( this.elIntentDelServicio != null ) {
-            // ya estaba arrancado
-            return;
-        }
-
-        Log.d(ETIQUETA_LOG, " MainActivity.constructor : voy a arrancar el servicio");
-
-        this.elIntentDelServicio = new Intent(this, ServicioEscuharBeacons.class);
-
-        this.elIntentDelServicio.putExtra("tiempoDeEspera", (long) 5000);
-
-        Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado" );
-        this.buscarTodosLosDispositivosBTLE();
-    } // ()
-
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-
     /**
      *
      * @param v indica si el usuario pulsó el botón
@@ -279,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.elIntentDelServicio.putExtra("tiempoDeEspera", (long) 5000);
         //this.buscarEsteDispositivoBTLE( "EPSG-GTI-PROY-3A" );
-        this.buscarEsteDispositivoBTLE( "OPPO A91" );
+        this.buscarEsteDispositivoBTLE( "josej" );
 
         Log.d(ETIQUETA_LOG, " boton arrancar servicio Pulsado" );
 
@@ -350,6 +259,35 @@ public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
     // --------------------------------------------------------------
+    /**
+     * Esta funcion se encarga de solicitar permiso de ubicacion al usuario
+     *
+     * @param permiso
+     * @param justificacion
+     * @param requestCode
+     * @param actividad
+     */
+
+    public static void solicitarPermiso(final String permiso, String
+            justificacion, final int requestCode, final Activity actividad) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(actividad,
+                permiso)){
+            new AlertDialog.Builder(actividad)
+                    .setTitle("Solicitud de permiso")
+                    .setMessage(justificacion)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            ActivityCompat.requestPermissions(actividad,
+                                    new String[]{permiso}, requestCode);
+                        }}).show();
+        } else {
+            ActivityCompat.requestPermissions(actividad,
+                    new String[]{permiso}, requestCode);
+        }
+    }
+
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -360,6 +298,13 @@ public class MainActivity extends AppCompatActivity {
         inicializarBlueTooth();
 
         Log.d(ETIQUETA_LOG, " onCreate(): termina ");
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.
+                ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            solicitarPermiso(Manifest.permission.ACCESS_FINE_LOCATION,
+                    "Sin el permiso localización no puedo mostrar la distancia"+
+                            " a los lugares.", SOLICITUD_PERMISO_LOCALIZACION, this);
+        }
 
     } // onCreate()
 

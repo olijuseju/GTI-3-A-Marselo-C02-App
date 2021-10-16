@@ -8,13 +8,6 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/botonBuscarDispositivosBTLE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="botonBuscarDispositivosBTLEPulsado"
-        android:text="Buscarrr Dispositivos BTLE nou 4" />
-
-    <Button
         android:id="@+id/botonDetenerBusquedaDispositivosBTLE"
         android:text="Detener búsaqueda Dispositivos BTLE"
         android:onClick="botonDetenerBusquedaDispositivosBTLEPulsado"
