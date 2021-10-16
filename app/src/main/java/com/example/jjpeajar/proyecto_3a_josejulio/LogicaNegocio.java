@@ -1,5 +1,12 @@
 package com.example.jjpeajar.proyecto_3a_josejulio;
 
+// --------------------------------------------------------------
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
+// --------------------------------------------------------------
+
 public class LogicaNegocio {
     private String ip = "http://192.168.1.102/";
 

@@ -27,6 +27,19 @@ import java.util.List;
 
 // -------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------
+
+// --------------------------------------------------------------
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
+// --------------------------------------------------------------
+/**
+ * Este servicio en segundo plano se encarga de recibir los beacons
+ * Los beacons están filtrados por nombre para solo recibir los de nuestro arduino
+ * Al recibir un beacon crea un objeto medicionCO2
+ * Con este objeto llama a la logica para realizar la peticion
+ */
 public class ServicioEscuharBeacons  extends IntentService {
 
     // ---------------------------------------------------------------------------------------------
@@ -54,6 +67,11 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
+
+    /**
+     * ServicioEscucharBeacons()
+     * constructor
+     */
     public ServicioEscuharBeacons( ) {
         super("HelloIntentService");
 
@@ -63,7 +81,7 @@ public class ServicioEscuharBeacons  extends IntentService {
     // --------------------------------------------------------------
     // --------------------------------------------------------------
     /**
-     *
+     * inicializarBlueTooth()
      * Inicializamos el escaner Bluetooth
      *
      */
@@ -148,26 +166,9 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
-    /*
-    @Override
-    public int onStartCommand( Intent elIntent, int losFlags, int startId) {
-
-        // creo que este método no es necesario usarlo. Lo ejecuta el thread principal !!!
-        super.onStartCommand( elIntent, losFlags, startId );
-
-        this.tiempoDeEspera = elIntent.getLongExtra("tiempoDeEspera", 50000);
-
-        Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onStartCommand : empieza: thread=" + Thread.currentThread().getId() );
-
-        return Service.START_CONTINUATION_MASK | Service.START_STICKY;
-    } // ()
-
-     */
-
-    // ---------------------------------------------------------------------------------------------
-    // ---------------------------------------------------------------------------------------------
 
     /**
+     *  parar()
      *  Paramos el servicio
      */
     public void parar () {
@@ -231,16 +232,13 @@ public class ServicioEscuharBeacons  extends IntentService {
                 mostrarInformacionDispositivoBTLE( resultado );
                 byte[] bytes = resultado.getScanRecord().getBytes();
                 TramaIBeacon tramaIBeacon = new TramaIBeacon(bytes);
-                if(Utilidades.bytesToInt(tramaIBeacon.getMajor())==12){
-                    MedicionC02 medicionC02 = new MedicionC02();
-                    medicionC02.SensorId="2";
-                    medicionC02.longitud=30;
-                    medicionC02.latitud=30;
-                    int data = Utilidades.bytesToInt(tramaIBeacon.getMinor());
-                    medicionC02.data = data;
-                    medicionC02s.add(medicionC02);
-                }
-
+                MedicionC02 medicionC02 = new MedicionC02();
+                medicionC02.SensorId="2";
+                medicionC02.longitud=30;
+                medicionC02.latitud=30;
+                int data = Utilidades.bytesToInt(tramaIBeacon.getMinor());
+                medicionC02.data = data;
+                medicionC02s.add(medicionC02);
                 Log.d("clienterestandroid", medicionC02s.size()+"");
 
                 if(medicionC02s.size()==20){

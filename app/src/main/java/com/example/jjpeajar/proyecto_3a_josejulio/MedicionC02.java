@@ -2,7 +2,15 @@ package com.example.jjpeajar.proyecto_3a_josejulio;
 
 import java.io.Serializable;
 
-public class MedicionC02 implements  Serializable {
+// --------------------------------------------------------------
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
+// --------------------------------------------------------------
+
+
+public class MedicionC02 implements Serializable {
     public String SensorId;
     public int data;
     public double latitud;
