@@ -10,6 +10,7 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 // -------------------------------------------------------------------------------------------------
@@ -34,7 +36,7 @@ public class ServicioEscuharBeacons  extends IntentService {
     private long tiempoDeEspera = 10000;
     private String dispositivoBuscado = null;
     private LogicaNegocio logicaNegocio = new LogicaNegocio();
-    private static final int CODIGO_PETICION_PERMISOS = 11223344;
+    public ArrayList<MedicionC02> medicionC02s= new ArrayList<>();
 
     public TramaIBeacon tib;
 
@@ -89,6 +91,13 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     } // ()
 
+
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
+    /**
+     * Mostramos la informacion del resultado del escaneo
+     * @param resultado Resultado del escaneo Bluetooth
+     */
 
     private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
 
@@ -220,6 +229,26 @@ public class ServicioEscuharBeacons  extends IntentService {
                 super.onScanResult(callbackType, resultado);
                 Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
                 mostrarInformacionDispositivoBTLE( resultado );
+                byte[] bytes = resultado.getScanRecord().getBytes();
+                TramaIBeacon tramaIBeacon = new TramaIBeacon(bytes);
+                if(Utilidades.bytesToInt(tramaIBeacon.getMajor())==12){
+                    MedicionC02 medicionC02 = new MedicionC02();
+                    medicionC02.SensorId="2";
+                    medicionC02.longitud=30;
+                    medicionC02.latitud=30;
+                    int data = Utilidades.bytesToInt(tramaIBeacon.getMinor());
+                    medicionC02.data = data;
+                    medicionC02s.add(medicionC02);
+                }
+
+                Log.d("clienterestandroid", medicionC02s.size()+"");
+
+                if(medicionC02s.size()==20){
+                    Log.d("clienterestandroid", "llamamos a la logica");
+
+                    logicaNegocio.publicarMecicion(medicionC02s.get(1));
+                    medicionC02s.clear();
+                }
             }
 
             @Override
@@ -238,20 +267,16 @@ public class ServicioEscuharBeacons  extends IntentService {
         };
 
         ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado ).build();
-
+        List<ScanFilter> filters = new ArrayList<>();
+        ScanSettings.Builder scan = new ScanSettings.Builder();
+        filters.add(sf);
+        this.elEscanner.startScan(filters, scan.build(), callbackDelEscaneo);
         Log.d(ETIQUETA_LOG, "  servicioEscucharBeacons(): empezamos a escanear buscando: " + dispositivoBuscado );
-
 
 
         try {
 
             while ( this.seguir ) {
-                if(tib!=null){
-                    Log.d(ETIQUETA_LOG,"alverga"+ String.valueOf(tib.getMajor()));
-
-                    MedicionC02 medicionC02 = new MedicionC02();
-                    logicaNegocio.publicarMecicion(medicionC02);
-                }
                 Thread.sleep(tiempoDeEspera);
                 Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onHandleIntent: tras la espera:  " + contador );
                 contador++;

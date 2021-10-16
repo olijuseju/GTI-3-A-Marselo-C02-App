@@ -47,7 +47,12 @@ public class PeticionarioRest extends AsyncTask<Void, Void, Boolean> {
         this.elCuerpo = cuerpo;
         this.laRespuesta = laRespuesta;
 
-        this.execute(); // otro thread ejecutará doInBackground()
+        try{
+            this.execute(); // otro thread ejecutará doInBackground()
+
+        }catch (Exception ex){
+
+        }
     }
 
     // --------------------------------------------------------------------
