@@ -180,6 +180,14 @@ public class ServicioEscuharBeacons  extends IntentService {
             return;
         }
 
+
+        if ( this.callbackDelEscaneo == null ) {
+            return;
+        }
+
+        this.elEscanner.stopScan( this.callbackDelEscaneo );
+        this.callbackDelEscaneo = null;
+
         this.seguir = false;
         this.stopSelf();
 

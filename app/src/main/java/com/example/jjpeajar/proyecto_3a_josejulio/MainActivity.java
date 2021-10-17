@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.elIntentDelServicio.putExtra("tiempoDeEspera", (long) 5000);
         //this.buscarEsteDispositivoBTLE( "EPSG-GTI-PROY-3A" );
-        this.buscarEsteDispositivoBTLE( "josej" );
+        this.buscarEsteDispositivoBTLE( "Andrey-Kuzmin-G3A" );
 
         Log.d(ETIQUETA_LOG, " boton arrancar servicio Pulsado" );
 
