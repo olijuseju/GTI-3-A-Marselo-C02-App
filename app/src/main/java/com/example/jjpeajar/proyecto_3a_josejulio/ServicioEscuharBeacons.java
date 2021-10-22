@@ -1,6 +1,7 @@
 package com.example.jjpeajar.proyecto_3a_josejulio;
 
 import android.app.IntentService;
+<<<<<<< HEAD
 import android.app.Service;
 import android.content.Intent;
 import android.util.Log;
@@ -9,6 +10,36 @@ import static android.app.Service.START_STICKY;
 
 // -------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------
+=======
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
+import android.content.Intent;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
+
+// --------------------------------------------------------------
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
+// --------------------------------------------------------------
+/**
+ * Este servicio en segundo plano se encarga de recibir los beacons
+ * Los beacons están filtrados por nombre para solo recibir los de nuestro arduino
+ * Al recibir un beacon crea un objeto medicionCO2
+ * Con este objeto llama a la logica para realizar la peticion
+ */
+>>>>>>> develop
 public class ServicioEscuharBeacons  extends IntentService {
 
     // ---------------------------------------------------------------------------------------------
@@ -16,17 +47,45 @@ public class ServicioEscuharBeacons  extends IntentService {
     private static final String ETIQUETA_LOG = ">>>>";
 
     private long tiempoDeEspera = 10000;
+<<<<<<< HEAD
+=======
+    private String dispositivoBuscado = null;
+    private LogicaFake logicaNegocio = new LogicaFake();
+    public ArrayList<MedicionC02> medicionC02s= new ArrayList<>();
+
+    public TramaIBeacon tib;
+
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
+    private BluetoothLeScanner elEscanner;
+
+    private ScanCallback callbackDelEscaneo = null;
+
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
+
+>>>>>>> develop
 
     private boolean seguir = true;
 
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
+<<<<<<< HEAD
     public ServicioEscuharBeacons(  ) {
+=======
+
+    /**
+     * ServicioEscucharBeacons()
+     * constructor
+     */
+    public ServicioEscuharBeacons( ) {
+>>>>>>> develop
         super("HelloIntentService");
 
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.constructor: termina");
     }
 
+<<<<<<< HEAD
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
     /*
@@ -47,6 +106,101 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
+=======
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
+    /**
+     * inicializarBlueTooth()
+     * Inicializamos el escaner Bluetooth
+     *
+     */
+    private void inicializarBlueTooth() {
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos adaptador BT ");
+
+        BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): habilitamos adaptador BT ");
+
+        bta.enable();
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): habilitado =  " + bta.isEnabled() );
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): estado =  " + bta.getState() );
+
+        Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos escaner btle ");
+
+        this.elEscanner = bta.getBluetoothLeScanner();
+
+        if ( this.elEscanner == null ) {
+            Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): Socorro: NO hemos obtenido escaner btle  !!!!");
+
+        }
+
+    } // ()
+
+
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
+    /**
+     * Mostramos la informacion del resultado del escaneo
+     * @param resultado Resultado del escaneo Bluetooth
+     */
+
+    private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
+
+        BluetoothDevice bluetoothDevice = resultado.getDevice();
+        byte[] bytes = resultado.getScanRecord().getBytes();
+        int rssi = resultado.getRssi();
+
+        Log.d(ETIQUETA_LOG, " ****************************************************");
+        Log.d(ETIQUETA_LOG, " ****** DISPOSITIVO DETECTADO BTLE ****************** ");
+        Log.d(ETIQUETA_LOG, " ****************************************************");
+        Log.d(ETIQUETA_LOG, " nombre = " + bluetoothDevice.getName());
+        Log.d(ETIQUETA_LOG, " toString = " + bluetoothDevice.toString());
+
+        /*
+        ParcelUuid[] puuids = bluetoothDevice.getUuids();
+        if ( puuids.length >= 1 ) {
+            //Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].getUuid());
+           // Log.d(ETIQUETA_LOG, " uuid = " + puuids[0].toString());
+        }*/
+
+        Log.d(ETIQUETA_LOG, " dirección = " + bluetoothDevice.getAddress());
+        Log.d(ETIQUETA_LOG, " rssi = " + rssi );
+
+        Log.d(ETIQUETA_LOG, " bytes = " + new String(bytes));
+        Log.d(ETIQUETA_LOG, " bytes (" + bytes.length + ") = " + Utilidades.bytesToHexString(bytes));
+
+        tib = new TramaIBeacon(bytes);
+
+
+        Log.d(ETIQUETA_LOG, " ----------------------------------------------------");
+        Log.d(ETIQUETA_LOG, " prefijo  = " + Utilidades.bytesToHexString(tib.getPrefijo()));
+        Log.d(ETIQUETA_LOG, "          advFlags = " + Utilidades.bytesToHexString(tib.getAdvFlags()));
+        Log.d(ETIQUETA_LOG, "          advHeader = " + Utilidades.bytesToHexString(tib.getAdvHeader()));
+        Log.d(ETIQUETA_LOG, "          companyID = " + Utilidades.bytesToHexString(tib.getCompanyID()));
+        Log.d(ETIQUETA_LOG, "          iBeacon type = " + Integer.toHexString(tib.getiBeaconType()));
+        Log.d(ETIQUETA_LOG, "          iBeacon length 0x = " + Integer.toHexString(tib.getiBeaconLength()) + " ( "
+                + tib.getiBeaconLength() + " ) ");
+        Log.d(ETIQUETA_LOG, " uuid  = " + Utilidades.bytesToHexString(tib.getUUID()));
+        Log.d(ETIQUETA_LOG, " uuid  = " + Utilidades.bytesToString(tib.getUUID()));
+        Log.d(ETIQUETA_LOG, " major  = " + Utilidades.bytesToHexString(tib.getMajor()) + "( "
+                + Utilidades.bytesToInt(tib.getMajor()) + " ) ");
+        Log.d(ETIQUETA_LOG, " minor  = " + Utilidades.bytesToHexString(tib.getMinor()) + "( "
+                + Utilidades.bytesToInt(tib.getMinor()) + " ) ");
+        Log.d(ETIQUETA_LOG, " txPower  = " + Integer.toHexString(tib.getTxPower()) + " ( " + tib.getTxPower() + " )");
+        Log.d(ETIQUETA_LOG, " ****************************************************");
+
+    } // ()
+
+    // ---------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------
+
+    /**
+     *  parar()
+     *  Paramos el servicio
+     */
+>>>>>>> develop
     public void parar () {
 
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.parar() " );
@@ -56,6 +210,17 @@ public class ServicioEscuharBeacons  extends IntentService {
             return;
         }
 
+<<<<<<< HEAD
+=======
+
+        if ( this.callbackDelEscaneo == null ) {
+            return;
+        }
+
+        this.elEscanner.stopScan( this.callbackDelEscaneo );
+        this.callbackDelEscaneo = null;
+
+>>>>>>> develop
         this.seguir = false;
         this.stopSelf();
 
@@ -80,9 +245,23 @@ public class ServicioEscuharBeacons  extends IntentService {
      * the intent that started the service. When this method returns, IntentService
      * stops the service, as appropriate.
      */
+<<<<<<< HEAD
     @Override
     protected void onHandleIntent(Intent intent) {
 
+=======
+    /**
+     *
+     * @param intent Actividad de la que obtenemos el contexto y el tiempo de espera
+     */
+    @Override
+    protected void onHandleIntent(Intent intent) {
+
+        inicializarBlueTooth();
+
+        this.dispositivoBuscado = intent.getStringExtra("dispositivoBuscado");
+
+>>>>>>> develop
         this.tiempoDeEspera = intent.getLongExtra("tiempoDeEspera", /* default */ 50000);
         this.seguir = true;
 
@@ -92,6 +271,57 @@ public class ServicioEscuharBeacons  extends IntentService {
 
         Log.d(ETIQUETA_LOG, " ServicioEscucharBeacons.onHandleIntent: empieza : thread=" + Thread.currentThread().getId() );
 
+<<<<<<< HEAD
+=======
+        this.callbackDelEscaneo = new ScanCallback() {
+            @Override
+            public void onScanResult( int callbackType, ScanResult resultado ) {
+                super.onScanResult(callbackType, resultado);
+                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
+                mostrarInformacionDispositivoBTLE( resultado );
+                byte[] bytes = resultado.getScanRecord().getBytes();
+                TramaIBeacon tramaIBeacon = new TramaIBeacon(bytes);
+                MedicionC02 medicionC02 = new MedicionC02();
+                medicionC02.SensorId="2";
+                medicionC02.longitud=30;
+                medicionC02.latitud=30;
+                int data = Utilidades.bytesToInt(tramaIBeacon.getMinor());
+                medicionC02.data = data;
+                medicionC02s.add(medicionC02);
+                Log.d("clienterestandroid", medicionC02s.size()+"");
+
+                if(medicionC02s.size()==20){
+                    Log.d("clienterestandroid", "llamamos a la logica");
+
+                    logicaNegocio.publicarMecicion(medicionC02s.get(1));
+                    medicionC02s.clear();
+                }
+            }
+
+            @Override
+            public void onBatchScanResults(List<ScanResult> results) {
+                super.onBatchScanResults(results);
+                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onBatchScanResults() ");
+
+            }
+
+            @Override
+            public void onScanFailed(int errorCode) {
+                super.onScanFailed(errorCode);
+                Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanFailed() ");
+
+            }
+        };
+
+        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado ).build();
+        List<ScanFilter> filters = new ArrayList<>();
+        ScanSettings.Builder scan = new ScanSettings.Builder();
+        filters.add(sf);
+        this.elEscanner.startScan(filters, scan.build(), callbackDelEscaneo);
+        Log.d(ETIQUETA_LOG, "  servicioEscucharBeacons(): empezamos a escanear buscando: " + dispositivoBuscado );
+
+
+>>>>>>> develop
         try {
 
             while ( this.seguir ) {

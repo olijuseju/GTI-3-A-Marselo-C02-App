@@ -1,13 +1,24 @@
 package com.example.jjpeajar.proyecto_3a_josejulio;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
+<<<<<<< HEAD
 // -----------------------------------------------------------------------------------
 // @author: Jordi Bataller i Mascarell
 // -----------------------------------------------------------------------------------
 public class TramaIBeacon {
 
     //Datos segmentados de la trama
+=======
+// --------------------------------------------------------------
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
+// --------------------------------------------------------------
+public class TramaIBeacon implements Serializable {
+>>>>>>> develop
     private byte[] prefijo = null; // 9 bytes
     private byte[] uuid = null; // 16 bytes
     private byte[] major = null; // 2 bytes
@@ -23,6 +34,10 @@ public class TramaIBeacon {
     private byte[] companyID = new byte[2]; // 2 bytes
     private byte iBeaconType = 0 ; // 1 byte
     private byte iBeaconLength = 0 ; // 1 byte
+
+    /**
+     * GETTERS Y SETTERS
+     */
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
@@ -96,8 +111,12 @@ public class TramaIBeacon {
     /**
      * Constructor de la clase. Segmentamos el array bytes
      *
+<<<<<<< HEAD
      * byte[] bytes bytes a segmentar
      *
+=======
+     * @param bytes bytes a segmentar
+>>>>>>> develop
      */
 
     public TramaIBeacon(byte[] bytes ) {

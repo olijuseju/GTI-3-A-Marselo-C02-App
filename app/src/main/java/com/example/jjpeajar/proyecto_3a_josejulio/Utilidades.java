@@ -3,10 +3,22 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-// -----------------------------------------------------------------------------------
-// @author: Jordi Bataller i Mascarell
-// -----------------------------------------------------------------------------------
+// --------------------------------------------------------------
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
+// --------------------------------------------------------------
 public class Utilidades {
+    // -------------------------------------------------------------------------------
+    /**
+     * Este método recibe un string de texto y devuelve una lista de bytes, a modo de utilidad
+     *
+     * @param {String} texto - Texto a convertir.
+     *
+     * @returns {Lista<Byte></>} Lista de bytes transformada.
+     */
+    // -------------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
@@ -17,6 +29,13 @@ public class Utilidades {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+
+    /**
+     * Este método recibe un string de texto y devuelve un UUID, a modo de utilidad
+     *
+     * @param uuid Texto a convertir
+     * @return {UUID} res texto convertido en UUID
+     */
     public static UUID stringToUUID( String uuid ) {
         if ( uuid.length() != 16 ) {
             throw new Error( "stringUUID: string no tiene 16 caracteres ");
@@ -36,18 +55,41 @@ public class Utilidades {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+
+    /**
+     * Este método recibe un UUID y devuelve un texto, a modo de utilidad
+     *
+     * @param uuid UUID a convertir
+     * @return {String} texto convertido
+     */
     public static String uuidToString ( UUID uuid ) {
         return bytesToString( dosLongToBytes( uuid.getMostSignificantBits(), uuid.getLeastSignificantBits() ) );
     } // ()
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+
+
+    /**
+     * Este método recibe un UUID y devuelve un texto, a modo de utilidad
+     *
+     * @param uuid UUID a convertir
+     * @return {HexString} texto convertido
+     */
     public static String uuidToHexString ( UUID uuid ) {
         return bytesToHexString( dosLongToBytes( uuid.getMostSignificantBits(), uuid.getLeastSignificantBits() ) );
     } // ()
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+
+    /**
+     * Este método recibe un array de bytes y devuelve una String, a modo de utilidad
+     *
+     * @param {Lista<Byte>} bytes - Lista de bytes  a convertir.
+     *
+     * @returns {String} Texto convertido.
+     */
     public static String bytesToString( byte[] bytes ) {
         if (bytes == null ) {
             return "";
@@ -62,6 +104,15 @@ public class Utilidades {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+    /**
+     * Este método recibe dos numeros long que son los bytes menos y mas significativo
+     * y los convierte en una lista de bytes, a modo de utilidad
+     *
+     * @param masSignificativos - Lista de bytes  a convertir.
+     * @param menosSignificativos - Lista de bytes  a convertir.
+     *
+     * @returns {Lista<Byte>} Lista de bytes transformada.
+     */
     public static byte[] dosLongToBytes( long masSignificativos, long menosSignificativos ) {
         ByteBuffer buffer = ByteBuffer.allocate( 2 * Long.BYTES );
         buffer.putLong( masSignificativos );
@@ -71,18 +122,42 @@ public class Utilidades {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+    /**
+     * Este método recibe una lista de bytes y devuelve su valor como un numero entero,
+     * a modo de utilidad
+     *
+     * @param bytes Lista de bytes  a convertir.
+     *
+     * @returns {int} Valor  valor numérico.
+     */
     public static int bytesToInt( byte[] bytes ) {
         return new BigInteger(bytes).intValue();
     }
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+    /**
+     * Este método recibe una lista de bytes y devuelve su valor como un numero long,
+     * a modo de utilidad
+     *
+     * @param bytes Lista de bytes  a convertir.
+     *
+     * @returns {long} Valor  valor numérico en long.
+     */
     public static long bytesToLong( byte[] bytes ) {
         return new BigInteger(bytes).longValue();
     }
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+    /**
+     * Este método recibe una lista de bytes y devuelve su valor como un numero entero,
+     * a modo de utilidad
+     *
+     * @param bytes Lista de bytes  a convertir.
+     *
+     * @returns {int} Valor  valor numérico.
+     */
     public static int bytesToIntOK( byte[] bytes ) {
         if (bytes == null ) {
             return 0;
@@ -121,6 +196,14 @@ public class Utilidades {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+    /**
+     * Este método recibe una lista de bytes y devuelve su valor como una String hexadecimal,
+     * a modo de utilidad
+     *
+     * @param {Lista<Byte>} bytes Lista de bytes  a convertir.
+     *
+     * @returns {HexString} Valor Texto HexString transformado.
+     */
     public static String bytesToHexString( byte[] bytes ) {
 
         if (bytes == null ) {
