@@ -1,9 +1,6 @@
 package com.example.jjpeajar.proyecto_3a_josejulio;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.IntentService;
-import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.BluetoothLeScanner;
@@ -12,16 +9,8 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.util.Log;
 
-import static android.app.Service.START_STICKY;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +37,7 @@ public class ServicioEscuharBeacons  extends IntentService {
 
     private long tiempoDeEspera = 10000;
     private String dispositivoBuscado = null;
-    private LogicaNegocio logicaNegocio = new LogicaNegocio();
+    private LogicaFake logicaNegocio = new LogicaFake();
     public ArrayList<MedicionC02> medicionC02s= new ArrayList<>();
 
     public TramaIBeacon tib;

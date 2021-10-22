@@ -7,10 +7,10 @@ package com.example.jjpeajar.proyecto_3a_josejulio;
  */
 // --------------------------------------------------------------
 
-public class LogicaNegocio {
-    private String ip = "http://192.168.1.102/";
+public class LogicaFake {
+    private String ip = "http://10.236.9.177/";
 
-    LogicaNegocio(){
+    LogicaFake(){
 
     }
 
