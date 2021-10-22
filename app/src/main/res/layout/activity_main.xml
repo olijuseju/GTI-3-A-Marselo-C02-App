@@ -8,7 +8,6 @@
     tools:context=".MainActivity">
 
     <Button
-<<<<<<< HEAD
         android:id="@+id/botonBuscarDispositivosBTLE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,8 +15,6 @@
         android:text="Buscar Dispositivos BTLE nou 4" />
 
     <Button
-=======
->>>>>>> develop
         android:id="@+id/botonDetenerBusquedaDispositivosBTLE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

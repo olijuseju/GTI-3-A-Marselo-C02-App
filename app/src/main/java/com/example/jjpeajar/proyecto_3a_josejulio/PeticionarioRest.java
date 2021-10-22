@@ -11,16 +11,6 @@ import java.net.URL;
 import android.os.AsyncTask;
 import android.util.Log;
 
-<<<<<<< HEAD
-=======
-// --------------------------------------------------------------
-/**
- * @author Jose Julio Peñaranda
- * 2021-10-14
- */
-// --------------------------------------------------------------
-
->>>>>>> develop
 // ------------------------------------------------------------------------
 // ------------------------------------------------------------------------
 public class PeticionarioRest extends AsyncTask<Void, Void, Boolean> {
@@ -43,7 +33,6 @@ public class PeticionarioRest extends AsyncTask<Void, Void, Boolean> {
 
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
-<<<<<<< HEAD
     /**
      * Texto,Texto,Texto,RespuestaRes->realizarPeticion()->
      *
@@ -52,15 +41,6 @@ public class PeticionarioRest extends AsyncTask<Void, Void, Boolean> {
      * String cuerpo Cuerpo del mensaje
      * RespuestaREST laRespuesta Mensaje de respuesta
      *
-=======
-
-    /**
-     *
-     * @param metodo Metodo a utilizar en la trama (POST, GET...)
-     * @param urlDestino Url destino de la petición
-     * @param cuerpo Cuerpo de la peticion, el metodo a utilizar
-     * @param laRespuesta Respuesta rest de la petición a la API
->>>>>>> develop
      */
     public void realizarPeticion (String metodo, String urlDestino, String cuerpo, RespuestaREST  laRespuesta) {
         this.elMetodo = metodo;
@@ -68,29 +48,14 @@ public class PeticionarioRest extends AsyncTask<Void, Void, Boolean> {
         this.elCuerpo = cuerpo;
         this.laRespuesta = laRespuesta;
 
-<<<<<<< HEAD
         this.execute(); // otro thread ejecutará doInBackground()
-=======
-        try{
-            this.execute(); // otro thread ejecutará doInBackground()
-
-        }catch (Exception ex){
-
-        }
->>>>>>> develop
     }
 
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
-<<<<<<< HEAD
     /**
      * Constructor ->
      *
-=======
-
-    /**
-     * Constructor()-->
->>>>>>> develop
      */
     public PeticionarioRest() {
         Log.d("clienterestandroid", "constructor()");
@@ -98,15 +63,6 @@ public class PeticionarioRest extends AsyncTask<Void, Void, Boolean> {
 
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
-<<<<<<< HEAD
-=======
-
-    /**
-     *
-     * @param params parametros backgrouns
-     * @return VoF
-     */
->>>>>>> develop
     @Override
     protected Boolean doInBackground(Void... params) {
         Log.d("clienterestandroid", "doInBackground()");
@@ -186,14 +142,6 @@ public class PeticionarioRest extends AsyncTask<Void, Void, Boolean> {
 
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
-<<<<<<< HEAD
-=======
-
-    /**
-     *
-     * @param comoFue true si la comunicación tuvo exito
-     */
->>>>>>> develop
     protected void onPostExecute(Boolean comoFue) {
         // llamado tras doInBackground()
         Log.d("clienterestandroid", "onPostExecute() comoFue = " + comoFue);
